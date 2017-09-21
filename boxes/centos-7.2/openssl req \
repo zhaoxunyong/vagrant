@@ -1,0 +1,28 @@
+openssl req \
+    -newkey rsa:4096 -nodes -sha256 -keyout ca.key \
+    -x509 -days 365 -out ca.crt
+
+openssl req \
+    -newkey rsa:4096 -nodes -sha256 -keyout registry.gcalls.cn.key \
+    -out registry.gcalls.cn.csr
+
+cd /etc/pki/CA/
+touch index.txt
+echo '01' > serial
+cd -
+
+#openssl x509 -req -days 365 -in /csr/abc.req.csr -signkey /csr/abc.key.pem.encrypted -out /csr/abc.cert.crt
+openssl ca -in registry.gcalls.cn.csr -out registry.gcalls.cn.crt -cert ca.crt -keyfile ca.key -outdir .
+
+/docker/works/harbor/ca/registry.gcalls.cn.crt
+/docker/works/harbor/ca/registry.gcalls.cn.key
+
+https://registry.gcalls.cn
+admin/Harbor12345
+
+docker login registry.gcalls.cn
+admin/Harbor12345
+
+push:
+mkdir -p /etc/docker/certs.d/registry.gcalls.cn
+cp ca/ca.crt /etc/docker/certs.d/registry.gcalls.cn/

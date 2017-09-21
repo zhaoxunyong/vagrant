@@ -1,0 +1,9 @@
+<Context path="/" docBase="/usr/local/tomcat/webapps/ROOT" reloadable="true">
+	<Manager className="de.javakaffee.web.msm.MemcachedBackupSessionManager"
+        	memcachedNodes="n1:127.0.0.1:11211"
+                sessionBackupAsync="false"  
+		sessionBackupTimeout="1800000"
+                requestUriIgnorePattern=".*\.(ico|png|gif|jpg|css|js)$"
+                transcoderFactoryClass="de.javakaffee.web.msm.serializer.javolution.JavolutionTranscoderFactory"
+	/>
+</Context>

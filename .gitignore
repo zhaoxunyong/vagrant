@@ -1,0 +1,6 @@
+*.gz
+*.tgz
+*.box
+*.iso
+*.zip
+.vagrant/

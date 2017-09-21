@@ -1,0 +1,13 @@
+{
+  "_comment": "Build with `packer build -var-file=centos7.json centos.json`",
+  "vm_name": "centos7",
+  "cpus": "1",
+  "disk_size": "102400",
+  "http_directory": "kickstart/centos7",
+  "iso_checksum": "ec7500d4b006702af6af023b1f8f1b890b6c7ee54400bb98cef968b883cd6546",
+  "iso_checksum_type": "sha256",
+  "iso_name": "CentOS-7-x86_64-DVD-1708.iso",
+  "iso_url": "D:\\Vagrant\\packer\\CentOS-7-x86_64-DVD-1708.iso",
+  "memory": "1024",
+  "parallels_guest_os_type": "centos7"
+}

@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+
+  #config.vm.box = "centos-7.3"
+  #config.vm.hostname = "mydocker"
+  #config.vm.network "private_network", ip: "192.168.10.9"
+  ##config.vm.synced_folder "/data/docker/registry", "/docker/registry"
+  ##config.vm.synced_folder "/data/docker/works", "/docker/works"
+  #config.vm.provider "parallels" do |vb|
+  #  #vb.gui = true
+  #  vb.memory = "1024"
+  #end
+  #
+  #config.vm.provision "shell", run: "always", inline: <<-SHELL
+  #  systemctl restart network
+  #SHELL
+  #config.vm.provision "shell" do |s|
+  #  s.path = "script.sh"
+  #  s.args = ["--bip=10.1.10.1/24", "zhaoxy.com"]
+  #end
+  ##config.vm.provision "shell", path: "script.sh"
+
+  config.vm.define :zhaoxy do |zhaoxy|
+    zhaoxy.vm.box = "centos-7.3"
+    zhaoxy.vm.hostname = "zhaoxy.com"
+    zhaoxy.vm.network "private_network", ip: "192.168.10.10"
+    #zhaoxy.vm.network "public_network", :bridge => "en0", :ip => "172.28.22.229"
+    #zhaoxy.vm.synced_folder "/data/docker", "/docker"
+    #zhaoxy.vm.synced_folder "/data/docker/registry", "/docker/registry"
+    #zhaoxy.vm.synced_folder "/data/docker/works", "/docker/works"
+    #zhaoxy.vm.synced_folder "/data/docker/k8s", "/docker/k8s"
+    zhaoxy.vm.provider "parallels" do |vb|
+      #vb.gui = true
+      vb.memory = "1024"
+      vb.update_guest_tools = true
+    end
+    zhaoxy.vm.provision "shell", run: "always", inline: <<-SHELL
+      systemctl restart network
+    SHELL
+    zhaoxy.vm.provision "shell" do |s|
+      s.path = "script.sh"
+      s.args = ["--bip=10.1.10.1/24", "zhaoxy.com"]
+    end
+    #zhaoxy.vm.provision "shell", path: "script.sh"
+  end
+  
+end

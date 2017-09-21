@@ -1,0 +1,84 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+$script = <<SCRIPT
+echo I am provisioning...
+date > /etc/vagrant_provisioned_at
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  #config.vm.box = "centos-6.7"
+  #config.vm.hostname = "dev"
+
+  config.vm.define :mydocker do |mydocker|
+    mydocker.vm.provider "virtualbox" do |vb|
+          vb.memory = "1024"
+          #vb.gui = true
+    end
+    mydocker.vm.box = "centos-6.7"
+    mydocker.vm.hostname = "mydocker"
+    #mydocker.vm.network "forwarded_port", guest: 80, host: 80
+    mydocker.vm.network :private_network, ip: "192.168.10.9"
+    #mydocker.vm.synced_folder "/data/docker", "/docker"
+    #config.vm.provision :shell, 
+    #  :inline => "systemctl restart network", 
+    #  run: "always"
+    config.vm.provision "shell", path: "script.sh"
+  end
+
+  #
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
+  #config.vm.network "private_network", ip: "192.168.10.10"
+  ## config.vm.network "public_network"
+  #config.vm.synced_folder "/Developer/webapps", "/www/webapps"
+  #
+  #config.vm.provider "virtualbox" do |vb|
+  #  vb.memory = "1024"
+  #end
+  
+  #config.vm.define :kafka1 do |kafka1|
+  #  kafka1.vm.provider "virtualbox" do |v|
+  #        v.customize ["modifyvm", :id, "--name", "kafka1", "--memory", "512"]
+  #        #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #  end
+  #  kafka1.vm.box = "centos-6.7"
+  #  kafka1.vm.hostname = "www.dev1.com"
+	#  #kafka1.vm.network "forwarded_port", guest: 80, host: 80
+  #  kafka1.vm.network :private_network, ip: "192.168.10.10"
+  #  #kafka1.vm.synced_folder "/Developer/webapps", "/www/webapps"
+  #	#config.vm.provision "shell", path: "script.sh"
+  #end
+  #
+  #config.vm.define :kafka2 do |kafka2|
+  #  kafka2.vm.provider "virtualbox" do |v|
+  #        v.customize ["modifyvm", :id, "--name", "kafka2", "--memory", "512"]
+  #        #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #  end
+  #  kafka2.vm.box = "centos-6.7"
+  #  kafka2.vm.hostname = "www.dev2.com"
+  #  #kafka2.vm.network "forwarded_port", guest: 80, host: 80
+  #  kafka2.vm.network :private_network, ip: "192.168.10.11"
+  #  #kafka2.vm.synced_folder "/Developer/webapps", "/www/webapps"
+  #  #config.vm.provision "shell", path: "script.sh"
+  #end
+  #
+  #config.vm.define :kafka3 do |kafka3|
+  #  kafka3.vm.provider "virtualbox" do |v|
+  #        v.customize ["modifyvm", :id, "--name", "kafka3", "--memory", "512"]
+  #        #v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  #  end
+  #  kafka3.vm.box = "centos-6.7"
+  #  kafka3.vm.hostname = "www.dev3.com"
+  #  #kafka3.vm.network "forwarded_port", guest: 80, host: 80
+  #  kafka3.vm.network :private_network, ip: "192.168.10.12"
+  #  #kafka3.vm.synced_folder "/Developer/webapps", "/www/webapps"
+  #  #config.vm.provision "shell", path: "script.sh"
+  #end
+
+  
+end
