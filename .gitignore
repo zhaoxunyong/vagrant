@@ -4,3 +4,4 @@
 *.iso
 *.zip
 .vagrant/
+docker/works

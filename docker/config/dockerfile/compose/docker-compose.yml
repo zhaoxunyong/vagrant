@@ -1,0 +1,12 @@
+web:
+  image: zhaoxunyong/nginx
+  command: nginx -g 'daemon off;'
+  ports:
+    - "8081:80"
+  links:
+    - redis
+
+redis:
+  image: zhaoxunyong/redis
+  ports:
+    - "6379:6379"
