@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-hosts
+data:
+  hosts: |
+    192.168.10.6  k8s-master
+    192.168.10.7  k8s-node1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: nginx
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+#  namespace: test
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: hosts-volume
+        configMap:
+          name: db-hosts
+
+      containers:
+      - name: nginx
+        image: nginx:1.12.1
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: hosts-volume
+          mountPath: /mnt/hosts.append
+      restartPolicy: Always

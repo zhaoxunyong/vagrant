@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: frontend
+    spec:
+      #hostNetwork: true
+      containers:
+      - name: nginx
+        image: nginx:1.12.1
+        ports:
+        - containerPort: 80
+          #hostPort: 80
+        volumeMounts:
+        - name: workdir
+          mountPath: /opt
+      volumes:
+      - name: workdir
+        emptyDir: {}
+        #emptyDir:
+        #  medium: Memory
+        #hostPath:
+        #  path: "/data/works/nginx/logs"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-server
+spec:
+  type: NodePort
+  ports:
+  - port: 22222   # cluster IP 的端口
+    targetPort: 80  # container容器的端口
+    nodePort: 30003
+  selector:
+    tier: frontend
+#  externalIPs: 
+#  - 192.168.10.6
+#  - 192.168.10.7
+#  - 192.168.10.8

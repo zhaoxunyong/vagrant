@@ -1,0 +1,5 @@
+[docker-repo]
+name=Docker Repository
+baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7
+enabled=1
+gpgcheck=0

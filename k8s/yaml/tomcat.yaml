@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tomcat-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tomcat
+        tier: frontend
+    spec:
+      #hostNetwork: true
+      containers:
+      - name: tomcat
+        image: tomcat:8.5.20
+        ports:
+        - containerPort: 8080
+          #hostPort: 80
+        volumeMounts:
+        - name: workdir
+          mountPath: /opt
+      volumes:
+      - name: workdir
+        emptyDir: {}
+        #hostPath:
+        #  path: "/data/works/tomcat/logs"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-server
+spec:
+  type: NodePort
+  ports:
+  - port: 11111   # cluster IP 的端口
+    targetPort: 8080  # container容器的端口
+    nodePort: 30002
+  selector:
+    tier: frontend
+#  externalIPs: 
+#  - 192.168.10.6
+#  - 192.168.10.7
+#  - 192.168.10.8

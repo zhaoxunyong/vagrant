@@ -7,7 +7,7 @@ echo "scripting......"
 filepath=/vagrant
 hostname=$1
 #bip=$2
-shadowsocks_ip=192.168.107.128
+shadowsocks_ip=192.168.0.106
 shadowsocks_domain=docker.zxy.com
 shadowsocks_port=1080
 
