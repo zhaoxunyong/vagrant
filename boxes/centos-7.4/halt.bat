@@ -1,4 +1,4 @@
 @echo off
-SET FOLDER=D:\Vagrant\boxes\centos-7.3
+SET FOLDER=D:\Vagrant\boxes\centos-7.4
 cd %FOLDER%
 vagrant halt

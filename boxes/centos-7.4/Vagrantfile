@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   #  zhaoxy.vm.box = "centos-7.4"
   #  zhaoxy.vm.hostname = "zhaoxy.com"
   #  zhaoxy.vm.network "private_network", ip: "192.168.10.9"
-  #  #zhaoxy.vm.synced_folder "/data/vagrant/docker", "/docker"
+  #  #zhaoxy.vm.synced_folder "/data/docker", "/docker"
   #  #zhaoxy.vm.synced_folder "/data/docker/registry", "/docker/registry"
   #  #zhaoxy.vm.synced_folder "/data/docker/works", "/docker/works"
   #  #zhaoxy.vm.synced_folder "/data/docker/k8s", "/docker/k8s"
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
     k8s_master.vm.box = "centos-7.4"
     k8s_master.vm.hostname = "k8s-master"
     k8s_master.vm.network "private_network", ip: "192.168.10.6"
-    k8s_master.vm.synced_folder "/data/vagrant/docker", "/docker"
+    k8s_master.vm.synced_folder "d:/data/docker", "/docker"
     k8s_master.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"
@@ -72,7 +72,7 @@ Vagrant.configure("2") do |config|
     k8s_node1.vm.box = "centos-7.4"
     k8s_node1.vm.hostname = "k8s-node1"
     k8s_node1.vm.network "private_network", ip: "192.168.10.7"
-    k8s_node1.vm.synced_folder "/data/vagrant/docker", "/docker"
+    k8s_node1.vm.synced_folder "d:/data/docker", "/docker"
     k8s_node1.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"
@@ -93,7 +93,7 @@ Vagrant.configure("2") do |config|
     k8s_node2.vm.box = "centos-7.4"
     k8s_node2.vm.hostname = "k8s-node2"
     k8s_node2.vm.network "private_network", ip: "192.168.10.8"
-    k8s_node2.vm.synced_folder "/data/vagrant/docker", "/docker"
+    k8s_node2.vm.synced_folder "d:/data/docker", "/docker"
     k8s_node2.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"

@@ -3,5 +3,6 @@
 *.box
 *.iso
 *.zip
+.DS_Store
 .vagrant/
 docker/works

@@ -1,6 +1,6 @@
 @echo off
-vagrant box add centos-7.3 vagrant-centos-7.3.box 
-vagrant init centos-7.3
+vagrant box add centos-7.4 centos7-0.0.99.box 
+vagrant init centos-7.4
 ::sudo vagrant up
 ::sudo vagrant halt
 vagrant box list
