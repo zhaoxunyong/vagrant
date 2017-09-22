@@ -5,7 +5,7 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-SHADOWSOCKS_IP = "192.168.107.121"
+SHADOWSOCKS_IP = "192.168.0.106"
 
 Vagrant.configure("2") do |config|
 
