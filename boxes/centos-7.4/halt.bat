@@ -1,4 +1,4 @@
 @echo off
-SET FOLDER=D:\Vagrant\boxes\centos-7.4
-cd %FOLDER%
+cd D:\data\vagrant\boxes\centos-7.4
+set VAGRANT_VAGRANTFILE=Vagrantfile.win
 vagrant halt

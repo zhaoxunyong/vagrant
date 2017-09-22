@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   #config.vm.synced_folder "/data/docker/registry", "/docker/registry"
   #config.vm.synced_folder "/data/docker/works", "/docker/works"
 #
-  #config.vm.provider "hyperv" do |vb|
+  #config.vm.provider "virtualbox" do |vb|
   #  #vb.gui = true
   #  vb.memory = "1536"
   #end
@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
   #  #zhaoxy.vm.synced_folder "/data/docker/registry", "/docker/registry"
   #  #zhaoxy.vm.synced_folder "/data/docker/works", "/docker/works"
   #  #zhaoxy.vm.synced_folder "/data/docker/k8s", "/docker/k8s"
-  #  zhaoxy.vm.provider "hyperv" do |vb|
+  #  zhaoxy.vm.provider "virtualbox" do |vb|
   #    #vb.gui = true
   #    vb.memory = "1536"
   #  end
@@ -50,11 +50,12 @@ Vagrant.configure("2") do |config|
     k8s_master.vm.box = "centos-7.3"
     k8s_master.vm.hostname = "k8s-master"
     k8s_master.vm.network "private_network", ip: "192.168.10.6"
-    #k8s_master.vm.synced_folder "d:/data/docker", "/docker"
-    k8s_master.vm.provider "hyperv" do |vb|
+    k8s_master.vm.synced_folder "d:/data/docker/registry", "/docker/registry"
+    k8s_master.vm.synced_folder "d:/data/docker/works", "/docker/works"
+    k8s_master.vm.synced_folder "d:/data/docker/k8s", "/docker/k8s"
+    k8s_master.vm.provider "virtualbox" do |vb|
       #vb.gui = true
-      vb.ip_address_timeout = 240
-      vb.memory = "1024"
+      vb.memory = "2048"
       vb.cpus = 1
     end
     k8s_master.vm.provision "shell", run: "always", inline: <<-SHELL
@@ -69,36 +70,40 @@ Vagrant.configure("2") do |config|
   end
 
 
-  #config.vm.define :k8s_node1 do |k8s_node1|
-  #  k8s_node1.vm.box = "centos-7.3"
-  #  k8s_node1.vm.hostname = "k8s-node1"
-  #  k8s_node1.vm.network "private_network", ip: "192.168.10.7"
-  #  k8s_node1.vm.synced_folder "d:/data/docker", "/docker"
-  #  k8s_node1.vm.provider "hyperv" do |vb|
-  #    #vb.gui = true
-  #    vb.memory = "1024"
-  #    vb.cpus = 1
-  #  end
-  #  k8s_node1.vm.provision "shell", run: "always", inline: <<-SHELL
-  #    systemctl restart network
-  #  SHELL
-  #  k8s_node1.vm.provision "shell" do |s|
-  #    s.path = "script.sh"
-  #    #s.args = ["k8s-node1", "--bip=10.1.20.1/24"]
-  #    s.args = ["k8s-node1"]
-  #  end
-  #end
-  #
-  #
+  config.vm.define :k8s_node1 do |k8s_node1|
+    k8s_node1.vm.box = "centos-7.3"
+    k8s_node1.vm.hostname = "k8s-node1"
+    k8s_node1.vm.network "private_network", ip: "192.168.10.7"
+    k8s_node1.vm.synced_folder "d:/data/docker/registry", "/docker/registry"
+    k8s_node1.vm.synced_folder "d:/data/docker/works", "/docker/works"
+    k8s_node1.vm.synced_folder "d:/data/docker/k8s", "/docker/k8s"
+    k8s_node1.vm.provider "virtualbox" do |vb|
+      #vb.gui = true
+      vb.memory = "2048"
+      vb.cpus = 1
+    end
+    k8s_node1.vm.provision "shell", run: "always", inline: <<-SHELL
+      systemctl restart network
+    SHELL
+    k8s_node1.vm.provision "shell" do |s|
+      s.path = "script.sh"
+      #s.args = ["k8s-node1", "--bip=10.1.20.1/24"]
+      s.args = ["k8s-node1"]
+    end
+  end
+  
+  
   #config.vm.define :k8s_node2 do |k8s_node2|
   #  k8s_node2.vm.box = "centos-7.3"
   #  k8s_node2.vm.hostname = "k8s-node2"
   #  k8s_node2.vm.network "private_network", ip: "192.168.10.8"
-  #  k8s_node2.vm.synced_folder "d:/data/docker", "/docker"
-  #  k8s_node2.vm.provider "hyperv" do |vb|
+  #  k8s_node2.vm.synced_folder "d:/data/docker/registry", "/docker/registry"
+  #  k8s_node2.vm.synced_folder "d:/data/docker/works", "/docker/works"
+  #  k8s_node2.vm.synced_folder "d:/data/docker/k8s", "/docker/k8s"
+  #  k8s_node2.vm.provider "virtualbox" do |vb|
   #    #vb.gui = true
   #    vb.memory = "1024"
-  #    vb.cpus = 1
+  #    vb.cpus = 2
   #  end
   #  k8s_node2.vm.provision "shell", run: "always", inline: <<-SHELL
   #    systemctl restart network

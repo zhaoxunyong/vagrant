@@ -5,6 +5,8 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+SHADOWSOCKS_IP = "192.168.107.121"
+
 Vagrant.configure("2") do |config|
 
   #config.vm.box = "centos-7.4"
@@ -50,7 +52,7 @@ Vagrant.configure("2") do |config|
     k8s_master.vm.box = "centos-7.4"
     k8s_master.vm.hostname = "k8s-master"
     k8s_master.vm.network "private_network", ip: "192.168.10.6"
-    k8s_master.vm.synced_folder "d:/data/docker", "/docker"
+    k8s_master.vm.synced_folder "d:/data/vagrant/docker", "/docker"
     k8s_master.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"
@@ -62,7 +64,7 @@ Vagrant.configure("2") do |config|
     k8s_master.vm.provision "shell" do |s|
       s.path = "script.sh"
       #s.args = ["k8s-master", "--bip=10.1.10.1/24"]
-      s.args = ["k8s-master"]
+      s.args = ["k8s-master", SHADOWSOCKS_IP]
     end
     #k8s_master.vm.provision "shell", path: "script.sh"
   end
@@ -72,7 +74,7 @@ Vagrant.configure("2") do |config|
     k8s_node1.vm.box = "centos-7.4"
     k8s_node1.vm.hostname = "k8s-node1"
     k8s_node1.vm.network "private_network", ip: "192.168.10.7"
-    k8s_node1.vm.synced_folder "d:/data/docker", "/docker"
+    k8s_node1.vm.synced_folder "d:/data/vagrant/docker", "/docker"
     k8s_node1.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"
@@ -84,7 +86,7 @@ Vagrant.configure("2") do |config|
     k8s_node1.vm.provision "shell" do |s|
       s.path = "script.sh"
       #s.args = ["k8s-node1", "--bip=10.1.20.1/24"]
-      s.args = ["k8s-node1"]
+      s.args = ["k8s-node1", SHADOWSOCKS_IP]
     end
   end
   
@@ -93,7 +95,7 @@ Vagrant.configure("2") do |config|
     k8s_node2.vm.box = "centos-7.4"
     k8s_node2.vm.hostname = "k8s-node2"
     k8s_node2.vm.network "private_network", ip: "192.168.10.8"
-    k8s_node2.vm.synced_folder "d:/data/docker", "/docker"
+    k8s_node2.vm.synced_folder "d:/data/vagrant/docker", "/docker"
     k8s_node2.vm.provider "virtualbox" do |vb|
       #vb.gui = true
       vb.memory = "1024"
@@ -105,7 +107,7 @@ Vagrant.configure("2") do |config|
     k8s_node2.vm.provision "shell" do |s|
       s.path = "script.sh"
       #s.args = ["k8s-node2", "--bip=10.1.30.1/24"]
-      s.args = ["k8s-node2"]
+      s.args = ["k8s-node2", SHADOWSOCKS_IP]
     end
   end
   
