@@ -136,7 +136,8 @@ systemctl enable docker
 #yum -y install python2-pip
 #pip install -U docker-compose
 
-yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
+# yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
+yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
 systemctl enable kubelet
 
 #sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd ${bip} \
