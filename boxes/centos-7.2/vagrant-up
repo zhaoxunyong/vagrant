@@ -1,3 +1,0 @@
-cd /Vagrant/boxes/centos-7.2/
-sudo vagrant up
-exit
