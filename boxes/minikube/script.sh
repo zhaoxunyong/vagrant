@@ -78,6 +78,8 @@ fi
 
 su - root -c "ulimit -a"
 
+echo "${shadowsocks_ip} ${shadowsocks_domain} " >> /etc/hosts
+
 tee /etc/resolv.conf << EOF
 search myk8s.com
 nameserver 114.114.114.114
