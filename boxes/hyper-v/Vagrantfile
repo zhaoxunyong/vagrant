@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :zhaoxy do |zhaoxy|
     zhaoxy.vm.box = "hyperv-7.4"
     zhaoxy.vm.hostname = "k8s-master"
-    zhaoxy.vm.network "private_network", ip: "192.168.10.6"
+    #zhaoxy.vm.network "private_network", ip: "192.168.10.6"
     #zhaoxy.vm.synced_folder "d:/data/docker", "/docker"
     zhaoxy.vm.provider "hyperv" do |vb|
       #vb.gui = true

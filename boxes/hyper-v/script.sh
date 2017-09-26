@@ -7,7 +7,7 @@ echo "scripting......"
 filepath=/vagrant
 hostname=$1
 #bip=$2
-shadowsocks_ip=192.168.107.121
+shadowsocks_ip=192.168.107.142
 shadowsocks_domain=docker.zxy.com
 shadowsocks_port=1080
 
@@ -21,6 +21,9 @@ fi
 sed -i 's;SELINUX=.*;SELINUX=disabled;' /etc/selinux/config
 setenforce 0
 getenforce
+
+sed -i 's;^PasswordAuthentication.*;PasswordAuthentication yes;' /etc/ssh/sshd_config
+systemctl restart sshd
 
 #LANG="en_US.UTF-8"
 sed -i 's;LANG=.*;LANG="zh_CN.UTF-8";' /etc/locale.conf
