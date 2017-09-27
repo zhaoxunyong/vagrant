@@ -6,10 +6,27 @@ echo "scripting......"
 
 filepath=/vagrant
 hostname=$1
-#bip=$2
+ip=$2
 shadowsocks_ip=192.168.107.142
 shadowsocks_domain=docker.zxy.com
 shadowsocks_port=1080
+
+tee /etc/sysconfig/network-scripts/ifcfg-eth0 << EOF
+DEVICE="eth0"
+BOOTPROTO="static"
+ONBOOT="yes"
+TYPE="Ethernet"
+IPADDR="${ip}"
+NETMASK="255.255.255.0"
+GATEWAY="192.168.11.1"
+DNS1="114.114.114.114"
+DNS2="8.8.8.8"
+EOF
+
+systemctl restart network
+
+sed -i 's;^PasswordAuthentication.*;PasswordAuthentication yes;' /etc/ssh/sshd_config
+systemctl restart sshd
 
 yum -y install wget
 

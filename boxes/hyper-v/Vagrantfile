@@ -5,6 +5,11 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+k8s_master_ip = "192.168.11.6"
+k8s_node1_ip = "192.168.11.7"
+k8s_node2_ip = "192.168.11.8"
+
 Vagrant.configure("2") do |config|
 
   #config.vm.box = "centos-7.4"
@@ -26,23 +31,28 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :zhaoxy do |zhaoxy|
     zhaoxy.vm.box = "hyperv-7.4"
-    zhaoxy.vm.hostname = "k8s-master"
+    #zhaoxy.vm.hostname = "k8s-master"
     #zhaoxy.vm.network "private_network", ip: "192.168.10.6"
-    #zhaoxy.vm.synced_folder "d:/data/docker", "/docker"
+    zhaoxy.vm.network "private_network", ip: k8s_master_ip, auto_config: false
+    #zhaoxy.vm.synced_folder "d:/data/vagrant/docker", "/docker"
+
     zhaoxy.vm.provider "hyperv" do |vb|
       #vb.gui = true
+      #vb.vswitch = "NATSwitch"
+      vb.ip_address_timeout = 480
       vb.memory = "1024"
       vb.cpus = 1
     end
+
     #zhaoxy.vm.provision "shell", run: "always", inline: <<-SHELL
-    #  systemctl restart network
     #SHELL
+
     zhaoxy.vm.provision "shell" do |s|
       s.path = "script.sh"
       #s.args = ["k8s-master", "--bip=10.1.10.1/24"]
-      s.args = ["k8s-master"]
+      s.args = ["k8s-master", "#{k8s_master_ip}"]
     end
-    ##zhaoxy.vm.provision "shell", path: "script.sh"
+    #zhaoxy.vm.provision "shell", path: "script.sh"
   end
 
   #config.vm.define :k8s_master do |k8s_master|
