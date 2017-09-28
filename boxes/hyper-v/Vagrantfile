@@ -11,7 +11,7 @@ k8s_node1_ip = "192.168.11.7"
 k8s_node2_ip = "192.168.11.8"
 host_ip = "192.168.11.1"
 username = "dave.zhao"
-password = "xxxx"
+password = "Dz8565*"
 
 Vagrant.configure("2") do |config|
 
