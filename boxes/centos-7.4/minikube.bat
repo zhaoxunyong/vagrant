@@ -1,1 +1,0 @@
-minikube.exe start --cpus 2 --memory 2048 --vm-driver="hyperv" --hyperv-virtual-switch="OuterNetwork" --docker-env HTTP_PROXY=http://192.168.107.142:1080 --docker-env HTTPS_PROXY=http://192.168.107.142:1080

@@ -4,18 +4,17 @@
 #http://c.biancheng.net/cpp/view/2739.html
 echo "scripting......"
 
-filepath=/vagrant
 hostname=$1
-shadowsocks_ip=$2
 
-shadowsocks_domain=docker.zxy.com
+shadowsocks_host=192.168.10.1
 shadowsocks_port=1080
 
+#base------------------------------------------------------------------------------------------
 yum -y install wget
 
 if [[ "$hostname" != "" ]]; then
-	hostnamectl --static set-hostname $hostname
-	sysctl kernel.hostname=$hostname
+    hostnamectl --static set-hostname $hostname
+    sysctl kernel.hostname=$hostname
 fi
 
 sed -i 's;SELINUX=.*;SELINUX=disabled;' /etc/selinux/config
@@ -27,8 +26,8 @@ sed -i 's;LANG=.*;LANG="zh_CN.UTF-8";' /etc/locale.conf
 
 cat /etc/NetworkManager/NetworkManager.conf|grep "dns=none" > /dev/null
 if [[ $? != 0 ]]; then
-	echo "dns=none" >> /etc/NetworkManager/NetworkManager.conf
-	systemctl restart NetworkManager.service
+    echo "dns=none" >> /etc/NetworkManager/NetworkManager.conf
+    systemctl restart NetworkManager.service
 fi
 
 systemctl disable iptables
@@ -78,8 +77,7 @@ fi
 
 su - root -c "ulimit -a"
 
-echo "${shadowsocks_ip} ${shadowsocks_domain}
-192.168.10.6   k8s-master
+echo "192.168.10.6   k8s-master
 192.168.10.7   k8s-node1
 192.168.10.8   k8s-node2" >> /etc/hosts
 
@@ -91,9 +89,22 @@ EOF
 
 #yum -y install gcc kernel-devel
 mv -f /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-#wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
-wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
+#wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+wget -O /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
 
+#yum -y install epel-release
+
+yum clean all
+yum makecache
+
+#yum -y install createrepo rpm-sign rng-tools yum-utils 
+yum -y install bind-utils bridge-utils ntpdate setuptool iptables system-config-securitylevel-tui system-config-network-tui \
+ ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip
+#base------------------------------------------------------------------------------------------
+
+
+#docker------------------------------------------------------------------------------------------
 tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [docker-repo]
 name=Docker Repository
@@ -105,40 +116,19 @@ gpgcheck=1
 gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
 EOF
 
-#https://kubernetes.io/docs/getting-started-guides/centos/centos_manual_config/
-tee /etc/yum.repos.d/kubernetes.repo <<EOF
-[kubernetes-repo]
-name=Kubernetes Repository
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=0
-EOF
-
-#yum -y install epel-release
-
-yum clean all
-yum makecache
-
-#yum -y install createrepo rpm-sign rng-tools yum-utils 
-yum -y install bind-utils bridge-utils ntpdate setuptool iptables system-config-securitylevel-tui system-config-network-tui \
- ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip
-
-#install docker-compose-----------------------------------------------
-
 rpm -e docker-1.10.3-59.el7.centos.x86_64 \
  docker-common-1.10.3-59.el7.centos.x86_64 \
  container-selinux-1.10.3-59.el7.centos.x86_64 > /dev/null 2>&1
 
 #yum install docker-ce -y
 yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
+
 systemctl enable docker
 
-#yum -y install python2-pip
-#pip install -U docker-compose
+yum -y install python2-pip
+pip install -U docker-compose
 
-# yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
-yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
-systemctl enable kubelet
+
 
 #sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd ${bip} \
 sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd \
@@ -150,13 +140,19 @@ sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd \
 mkdir -p /etc/systemd/system/docker.service.d
 tee /etc/systemd/system/docker.service.d/http-proxy.conf  << EOF
 [Service]
-Environment="HTTP_PROXY=http://${shadowsocks_domain}:${shadowsocks_port}"
-Environment="HTTPS_PROXY=http://${shadowsocks_domain}:${shadowsocks_port}"
-Environment="NO_PROXY=localhost,${shadowsocks_domain},docker.io"
+Environment="HTTP_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
+Environment="HTTPS_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
+Environment="NO_PROXY=localhost,${shadowsocks_host}"
 EOF
 
 systemctl daemon-reload
 #systemctl show --property=Environment docker
+
+#/usr/lib/systemd/system/docker.service
+## DOCKER_RAMDISK disables pivot_root in Docker, using MS_MOVE instead.
+#Environment=DOCKER_RAMDISK=yes
+#Environment=HTTP_PROXY=http://192.168.10.1:1080
+#Environment=HTTPS_PROXY=http://192.168.10.1:1080
 
 systemctl restart docker
 
@@ -168,38 +164,31 @@ function proxy_off(){
 }
 
 function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
-    export http_proxy="http://${shadowsocks_domain}:${shadowsocks_port}"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10,6,192.168.10,7,192.168.10,8"
+    export http_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     export https_proxy=$http_proxy
     echo -e "已开启代理"
 }
 EOF
 
 . ~/.bash_profile
+#docker------------------------------------------------------------------------------------------
 
-#cd /docker/works/images/k8s/
-#./importK8s.sh
-#
-#docker load -i /docker/works/images/others/redis-master.tar 
-#docker load -i /docker/works/images/others/guestbook-redis-slave.tar 
-#docker load -i /docker/works/images/others/guestbook-php-frontend.tar
-#
-#docker load -i /docker/works/images/k8s/tar/quagga.tar
-#docker run -itd --name=router --privileged --net=host index.alauda.cn/georce/router
-#docker start `docker ps -a |grep 'index.alauda.cn/georce/router'|awk '{print $1}'`
 
-#install docker-engine end-----------------------------------------------
+#k8s------------------------------------------------------------------------------------------
+#https://kubernetes.io/docs/getting-started-guides/centos/centos_manual_config/
+tee /etc/yum.repos.d/kubernetes.repo <<EOF
+[kubernetes-repo]
+name=Kubernetes Repository
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+enabled=1
+gpgcheck=0
+EOF
 
-#mkdir /usr/local/java > /dev/null 2>&1 
-#cd $filepath/files
-#tar zxf jdk-8u111-linux-x64.tar.gz -C /usr/local/java/
-#ln -sf /usr/local/java/jdk1.8.0_111 /usr/local/java/jdk
-#
-#cat /etc/profile|grep "JAVA_HOME" > /dev/null
-#if [[ $? != 0 ]]; then
-#cat >> /etc/profile  << EOF
-#	export JAVA_HOME=/usr/local/java/jdk
-#	export PATH=\$JAVA_HOME/bin:\$PATH
-#EOF
-#	source /etc/profile
-#fi
+# yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
+yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
+
+sed -i 's;systemd;cgroupfs;g' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+systemctl enable kubelet
+#k8s------------------------------------------------------------------------------------------
