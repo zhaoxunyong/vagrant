@@ -10,7 +10,7 @@ shadowsocks_host=192.168.10.1
 shadowsocks_port=1080
 
 #base------------------------------------------------------------------------------------------
-yum -y install wget
+#yum -y install wget
 
 if [[ "$hostname" != "" ]]; then
     hostnamectl --static set-hostname $hostname
@@ -89,8 +89,8 @@ EOF
 
 #yum -y install gcc kernel-devel
 mv -f /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
-#wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+# wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 wget -O /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo
 
 #yum -y install epel-release
@@ -166,7 +166,7 @@ function proxy_off(){
 function proxy_on() {
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10,6,192.168.10,7,192.168.10,8"
     export http_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
-    export https_proxy=$http_proxy
+    export https_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     echo -e "已开启代理"
 }
 EOF
