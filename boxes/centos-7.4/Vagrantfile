@@ -67,7 +67,6 @@ Vagrant.configure("2") do |config|
     end
   end
   
-  
   #config.vm.define :k8s_node2 do |k8s_node2|
   #  k8s_node2.vm.box = "centos-7.4"
   #  k8s_node2.vm.hostname = "k8s-node2"
