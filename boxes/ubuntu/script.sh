@@ -97,7 +97,7 @@ EOF
 
 sudo apt-get update
 
-apt-get -y install gdebi-core gnupg lrzsz
+apt-get -y install gdebi-core gnupg lrzsz zip unzip
 
 echo 'alias ll="ls -l"' >> ~/.bash_profile
 . ~/.bash_profile

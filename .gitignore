@@ -4,6 +4,7 @@
 *.iso
 *.zip
 *.tar
+*.deb
 .DS_Store
 .vagrant/
 docker/works

@@ -82,7 +82,10 @@ systemctl restart docker
 #apt-get download kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
 cd $docker_install_folder
 #install:dpkg -i安装时不会自动下载依赖包，需要自动下载依赖包时，需要安装gdebi
-gdebi kubelet_1.7.5-00_amd64.deb kubectl_1.7.5-00_amd64.deb kubeadm_1.7.5-00_amd64.deb kubernetes-cni_0.5.1-00_amd64.deb
+gdebi kubernetes-cni_0.5.1-00_amd64.deb
+gdebi kubelet_1.7.5-00_amd64.deb
+gdebi kubectl_1.7.5-00_amd64.deb
+gdebi kubeadm_1.7.5-00_amd64.deb
 systemctl enable kubelet
 
 sed -i 's;systemd;cgroupfs;g' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
