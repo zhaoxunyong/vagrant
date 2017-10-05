@@ -36,10 +36,10 @@ sudo apt-get install -y --no-install-recommends \
 
 #http://blog.csdn.net/CSDN_duomaomao/article/details/77683607
 #https://www.xtplayer.cn/2017/02/2783
+curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add -
 cat >/etc/apt/sources.list.d/docker-main.list<<EOF
 deb [arch=amd64] http://mirrors.aliyun.com/docker-engine/apt/repo ubuntu-xenial main
 EOF
-curl -fsSL https://apt.dockerproject.org/gpg | sudo apt-key add -
 # apt-get update && apt-get upgrade -y 
 sudo apt-get update
 
