@@ -59,13 +59,13 @@ sed -i "s;^ExecStart=/usr/bin/dockerd.*;ExecStart=/usr/bin/dockerd -H fd:// \
 --registry-mirror=http://zhaoxunyong.m.alauda.cn;" \
 /lib/systemd/system/docker.service
 
-#mkdir -p /etc/systemd/system/docker.service.d
-#cat >> /etc/systemd/system/docker.service.d/http-proxy.conf << EOF
-#[Service]
-#Environment="HTTP_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
-#Environment="HTTPS_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
-#Environment="NO_PROXY=localhost,${shadowsocks_host}"
-#EOF
+mkdir -p /etc/systemd/system/docker.service.d
+cat >> /etc/systemd/system/docker.service.d/http-proxy.conf << EOF
+[Service]
+Environment="HTTP_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
+Environment="HTTPS_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
+Environment="NO_PROXY=localhost,${shadowsocks_host}"
+EOF
 
 systemctl daemon-reload
 systemctl show --property=Environment docker

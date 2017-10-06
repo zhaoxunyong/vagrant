@@ -97,10 +97,14 @@ EOF
 
 sudo apt-get update
 
-apt-get -y install gdebi-core gnupg lrzsz zip unzip
+apt-get -y install gdebi-core gnupg lrzsz zip unzip expect
 
 echo 'alias ll="ls -l"' >> ~/.bash_profile
 . ~/.bash_profile
+
+# change root pwd
+cd /vagrant
+sh changpwd.sh
 
 #install docker start
 #sh docker.sh
