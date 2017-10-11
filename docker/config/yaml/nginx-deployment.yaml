@@ -1,9 +1,9 @@
-apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -14,3 +14,16 @@ spec:
         image: nginx:1.7.9
         ports:
         - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80   # cluster IP 的端口
+    targetPort: 80  # container容器的端口
+    nodePort: 30002
+  selector:
+    app: nginx

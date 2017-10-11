@@ -23,3 +23,4 @@ if [[ $UPDATE  =~ true || $UPDATE =~ 1 || $UPDATE =~ yes ]]; then
     reboot
     sleep 60
 fi
+
