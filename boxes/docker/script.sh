@@ -77,9 +77,8 @@ fi
 
 su - root -c "ulimit -a"
 
-echo "192.168.10.6   k8s-master
-192.168.10.7   k8s-node1
-192.168.10.8   k8s-node2" >> /etc/hosts
+echo "192.168.10.10   docker1
+192.168.10.11   docker2" >> /etc/hosts
 
 tee /etc/resolv.conf << EOF
 search myk8s.com
@@ -108,20 +107,20 @@ yum -y install bind-utils bridge-utils ntpdate setuptool iptables system-config-
 tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [docker-repo]
 name=Docker Repository
-#baseurl=https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/
-baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/
+baseurl=https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/
+#baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/
 enabled=1
 gpgcheck=1
-#gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg
-gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
+gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg
+#gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
 EOF
 
 rpm -e docker-1.10.3-59.el7.centos.x86_64 \
  docker-common-1.10.3-59.el7.centos.x86_64 \
  container-selinux-1.10.3-59.el7.centos.x86_64 > /dev/null 2>&1
 
-#yum install docker-ce -y
-yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
+yum install docker-ce -y
+#yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
 
 systemctl enable docker
 
@@ -142,7 +141,7 @@ tee /etc/systemd/system/docker.service.d/http-proxy.conf  << EOF
 [Service]
 Environment="HTTP_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
 Environment="HTTPS_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
-Environment="NO_PROXY=localhost,${shadowsocks_host},192.168.10.6,192.168.10.7,192.168.10.8"
+Environment="NO_PROXY=localhost,${shadowsocks_host},192.168.10,10,192.168.10,11"
 EOF
 
 systemctl daemon-reload
@@ -164,7 +163,7 @@ function proxy_off(){
 }
 
 function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10.6,192.168.10.7,192.168.10.8"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10,10,192.168.10,11"
     export http_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     export https_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     echo -e "已开启代理"
@@ -173,22 +172,3 @@ EOF
 
 . ~/.bash_profile
 #docker------------------------------------------------------------------------------------------
-
-
-#k8s------------------------------------------------------------------------------------------
-#https://kubernetes.io/docs/getting-started-guides/centos/centos_manual_config/
-tee /etc/yum.repos.d/kubernetes.repo <<EOF
-[kubernetes-repo]
-name=Kubernetes Repository
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=0
-EOF
-
-# yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
-yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
-
-sed -i 's;systemd;cgroupfs;g' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-
-systemctl enable kubelet
-#k8s------------------------------------------------------------------------------------------

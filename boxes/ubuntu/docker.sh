@@ -64,7 +64,7 @@ cat >> /etc/systemd/system/docker.service.d/http-proxy.conf << EOF
 [Service]
 Environment="HTTP_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
 Environment="HTTPS_PROXY=http://${shadowsocks_host}:${shadowsocks_port}"
-Environment="NO_PROXY=localhost,${shadowsocks_host}"
+Environment="NO_PROXY=localhost,${shadowsocks_host},192.168.10.6,192.168.10.7,192.168.10.8"
 EOF
 
 systemctl daemon-reload
@@ -98,7 +98,7 @@ function proxy_off(){
 }
 
 function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10,6,192.168.10,7,192.168.10,8"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,${shadowsocks_host},192.168.10.6,192.168.10.7,192.168.10.8"
     export http_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     export https_proxy="http://${shadowsocks_host}:${shadowsocks_port}"
     echo -e "已开启代理"
