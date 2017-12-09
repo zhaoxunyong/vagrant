@@ -121,7 +121,7 @@ rpm -e docker-1.10.3-59.el7.centos.x86_64 \
  container-selinux-1.10.3-59.el7.centos.x86_64 > /dev/null 2>&1
 
 #yum install docker-ce -y
-yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
+yum install -y docker-engine-1.12.6-1.el7.centos.x86_64 docker-engine-selinux-1.12.6-1.el7.centos.noarch
 
 systemctl enable docker
 
