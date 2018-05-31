@@ -187,6 +187,7 @@ EOF
 
 # yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.6.2-0.x86_64 kubectl-1.6.2-0.x86_64 kubeadm-1.6.2-0.x86_64
 yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
+#yum install -y etcd-3.1.9-2.el7.x86_64 flannel-0.7.1-2.el7.x86_64
 
 sed -i 's;systemd;cgroupfs;g' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
