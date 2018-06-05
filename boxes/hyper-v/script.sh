@@ -117,12 +117,12 @@ wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [docker-repo]
 name=Docker Repository
-#baseurl=https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/
-baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/
+baseurl=https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/
+#baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/
 enabled=1
 gpgcheck=1
-#gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg
-gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
+gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg
+#gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
 EOF
 
 #https://kubernetes.io/docs/getting-started-guides/centos/centos_manual_config/
@@ -150,14 +150,16 @@ rpm -e docker-1.10.3-59.el7.centos.x86_64 \
  container-selinux-1.10.3-59.el7.centos.x86_64 > /dev/null 2>&1
 
 #yum install docker-ce -y
-yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
+#yum install -y docker-engine-1.12.6-1.el7.centos.x86_64
+#wget https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/Packages/docker-engine-1.12.6-1.el7.centos.x86_64.rpm
+yum install -y docker
 systemctl enable docker
 
 #yum -y install python2-pip
 #pip install -U docker-compose
 
-yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
-systemctl enable kubelet
+#yum install -y kubernetes-cni-0.5.1-0.x86_64 kubelet-1.7.5-0.x86_64 kubectl-1.7.5-0.x86_64 kubeadm-1.7.5-0.x86_64
+#systemctl enable kubelet
 
 #sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd ${bip} \
 sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd \
@@ -171,7 +173,7 @@ tee /etc/systemd/system/docker.service.d/http-proxy.conf  << EOF
 [Service]
 Environment="HTTP_PROXY=http://${shadowsocks_domain}:${shadowsocks_port}"
 Environment="HTTPS_PROXY=http://${shadowsocks_domain}:${shadowsocks_port}"
-Environment="NO_PROXY=localhost,${shadowsocks_domain},docker.io"
+Environment="NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12,${shadowsocks_domain},docker.io"
 EOF
 
 systemctl daemon-reload
@@ -187,7 +189,7 @@ function proxy_off(){
 }
 
 function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export no_proxy="127.0.0.1,localhost,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
     export http_proxy="http://${shadowsocks_domain}:${shadowsocks_port}"
     export https_proxy=$http_proxy
     echo -e "已开启代理"

@@ -11,7 +11,7 @@ k8s_node1_ip = "192.168.11.7"
 k8s_node2_ip = "192.168.11.8"
 host_ip = "192.168.11.1"
 username = "dave.zhao"
-password = ""
+password = "Dz8565"
 
 Vagrant.configure("2") do |config|
 
@@ -29,10 +29,10 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
     end
 
-    k8s_master.vm.provision "shell", run: "always", inline: <<-SHELL
-    mkdir -p /docker > /dev/null 2>&1
-    sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
-    SHELL
+    # k8s_master.vm.provision "shell", run: "always", inline: <<-SHELL
+    # mkdir -p /docker > /dev/null 2>&1
+    # sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
+    # SHELL
 
     k8s_master.vm.provision "shell" do |s|
       s.path = "script.sh"
@@ -42,59 +42,59 @@ Vagrant.configure("2") do |config|
     #k8s_master.vm.provision "shell", path: "script.sh"
   end
 
-  config.vm.define :k8s_node1 do |k8s_node1|
-    k8s_node1.vm.box = "hyperv-7.3"
-    #k8s_node1.vm.hostname = "k8s-node1"
-    #k8s_node1.vm.network "private_network", ip: "192.168.10.6"
-    k8s_node1.vm.network "private_network", ip: k8s_node1_ip, auto_config: false
+  # config.vm.define :k8s_node1 do |k8s_node1|
+  #   k8s_node1.vm.box = "hyperv-7.3"
+  #   #k8s_node1.vm.hostname = "k8s-node1"
+  #   #k8s_node1.vm.network "private_network", ip: "192.168.10.6"
+  #   k8s_node1.vm.network "private_network", ip: k8s_node1_ip, auto_config: false
 
-    k8s_node1.vm.provider "hyperv" do |vb|
-      #vb.gui = true
-      #vb.vswitch = "NATSwitch"
-      vb.ip_address_timeout = 480
-      vb.memory = "1024"
-      vb.cpus = 1
-    end
+  #   k8s_node1.vm.provider "hyperv" do |vb|
+  #     #vb.gui = true
+  #     #vb.vswitch = "NATSwitch"
+  #     vb.ip_address_timeout = 480
+  #     vb.memory = "1024"
+  #     vb.cpus = 1
+  #   end
 
-    k8s_node1.vm.provision "shell", run: "always", inline: <<-SHELL
-    mkdir -p /docker > /dev/null 2>&1
-    sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
-    SHELL
+  #   k8s_node1.vm.provision "shell", run: "always", inline: <<-SHELL
+  #   mkdir -p /docker > /dev/null 2>&1
+  #   sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
+  #   SHELL
 
-    k8s_node1.vm.provision "shell" do |s|
-      s.path = "script.sh"
-      #s.args = ["k8s-node1", "--bip=10.1.10.1/24"]
-      s.args = ["k8s-node1", "#{k8s_node1_ip}"]
-    end
-    #k8s_node1.vm.provision "shell", path: "script.sh"
-  end
+  #   k8s_node1.vm.provision "shell" do |s|
+  #     s.path = "script.sh"
+  #     #s.args = ["k8s-node1", "--bip=10.1.10.1/24"]
+  #     s.args = ["k8s-node1", "#{k8s_node1_ip}"]
+  #   end
+  #   #k8s_node1.vm.provision "shell", path: "script.sh"
+  # end
 
-  config.vm.define :k8s_node2 do |k8s_node2|
-    k8s_node2.vm.box = "hyperv-7.3"
-    #k8s_node2.vm.hostname = "k8s-node2"
-    #k8s_node2.vm.network "private_network", ip: "192.168.10.6"
-    k8s_node2.vm.network "private_network", ip: k8s_node2_ip, auto_config: false
-    #k8s_node2.vm.synced_folder "d:/data/vagrant/docker", "/docker"
+  # config.vm.define :k8s_node2 do |k8s_node2|
+  #   k8s_node2.vm.box = "hyperv-7.3"
+  #   #k8s_node2.vm.hostname = "k8s-node2"
+  #   #k8s_node2.vm.network "private_network", ip: "192.168.10.6"
+  #   k8s_node2.vm.network "private_network", ip: k8s_node2_ip, auto_config: false
+  #   #k8s_node2.vm.synced_folder "d:/data/vagrant/docker", "/docker"
 
-    k8s_node2.vm.provider "hyperv" do |vb|
-      #vb.gui = true
-      #vb.vswitch = "NATSwitch"
-      vb.ip_address_timeout = 480
-      vb.memory = "1024"
-      vb.cpus = 1
-    end
+  #   k8s_node2.vm.provider "hyperv" do |vb|
+  #     #vb.gui = true
+  #     #vb.vswitch = "NATSwitch"
+  #     vb.ip_address_timeout = 480
+  #     vb.memory = "1024"
+  #     vb.cpus = 1
+  #   end
 
-    k8s_node2.vm.provision "shell", run: "always", inline: <<-SHELL
-    mkdir -p /docker > /dev/null 2>&1
-    sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
-    SHELL
+  #   k8s_node2.vm.provision "shell", run: "always", inline: <<-SHELL
+  #   mkdir -p /docker > /dev/null 2>&1
+  #   sudo mount -t cifs -o username=#{username},password=#{password} //#{host_ip}/d/data/vagrant/docker /docker
+  #   SHELL
 
-    k8s_node2.vm.provision "shell" do |s|
-      s.path = "script.sh"
-      #s.args = ["k8s-node2", "--bip=10.1.10.1/24"]
-      s.args = ["k8s-node2", "#{k8s_node2_ip}"]
-    end
-    #k8s_node2.vm.provision "shell", path: "script.sh"
-  end
+  #   k8s_node2.vm.provision "shell" do |s|
+  #     s.path = "script.sh"
+  #     #s.args = ["k8s-node2", "--bip=10.1.10.1/24"]
+  #     s.args = ["k8s-node2", "#{k8s_node2_ip}"]
+  #   end
+  #   #k8s_node2.vm.provision "shell", path: "script.sh"
+  # end
   
 end
