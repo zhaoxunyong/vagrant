@@ -113,15 +113,15 @@ EOF
 mv -f /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 #wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+#docker-ce repo
+#wget -O /etc/yum.repos.d/docker-ce.repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
 tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [docker-repo]
 name=Docker Repository
-baseurl=https://mirrors.aliyun.com/docker-ce/linux/centos/7/x86_64/stable/
 #baseurl=https://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/
 enabled=1
 gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg
 #gpgkey=https://mirrors.aliyun.com/docker-engine/yum/gpg
 EOF
 
