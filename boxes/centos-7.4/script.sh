@@ -132,8 +132,10 @@ pip install -U docker-compose
 
 #sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd ${bip} \
 sed -i "s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd \
---registry-mirror=http://3fecfd09.m.daocloud.io \
 --registry-mirror=https://3gbbfq7n.mirror.aliyuncs.com \
+--registry-mirror=https://registry.docker-cn.com \
+--registry-mirror=http://hub-mirror.c.163.com \
+--registry-mirror=http://3fecfd09.m.daocloud.io \
 --registry-mirror=http://zhaoxunyong.m.alauda.cn;" \
 /usr/lib/systemd/system/docker.service
 

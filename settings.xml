@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <!-- 本地仓库地址：可修改为本机任意路径，依赖包将放置于该包中 -->
+    <localRepository>d:/Developer/.m2/repository</localRepository>
+    <pluginGroups>
+    </pluginGroups>
+
+    <proxies>
+    </proxies>
+
+    <!-- 对应版本发布时用户名密码 -->
+    <servers>
+        <server>
+            <id>snapshots</id>
+            <username>snapshots</username>
+            <password>EYanJVVy8bwMYnGUbuJM</password>
+        </server>
+        <server>
+            <id>releases</id>
+            <username>releases</username>
+            <password>QdeKZEWTjoXHbmWBW6my</password>
+        </server>
+    </servers>
+
+    <!-- 中央库镜像化 -->
+    <!-- http://maven.aliyun.com/nexus/content/repositories/central/ -->
+    <mirrors>
+        <mirror>
+            <id>nexus</id>
+            <name>internalNexusRepository</name>
+            <url>http://nexus.aeasycredit.net/content/groups/public</url>
+            <!-- <url>http://maven.aliyun.com/nexus/content/groups/public/</url> -->
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <!-- 激活全局的repositories -->
+    <profiles>
+        <profile>
+            <id>profile</id>
+            <repositories>
+                <repository>
+                    <id>nexus</id>
+                    <url>http://nexus.aeasycredit.net/content/groups/public</url>
+                    <!-- <url>http://maven.aliyun.com/nexus/content/groups/public/</url> -->
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>nexus</id>
+                    <url>http://nexus.aeasycredit.net/content/groups/public</url>
+                    <!-- <url>http://maven.aliyun.com/nexus/content/groups/public/</url> -->
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>profile</activeProfile>
+    </activeProfiles>
+</settings>
