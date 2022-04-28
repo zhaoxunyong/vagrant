@@ -131,8 +131,11 @@ yum clean all
 yum makecache
 
 #yum -y install createrepo rpm-sign rng-tools yum-utils 
-yum -y install bind-utils bridge-utils ntpdate setuptool iptables system-config-securitylevel-tui system-config-network-tui \
- ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip
+yum -y install htop bind-utils bridge-utils ntpdate setuptool iptables system-config-securitylevel-tui system-config-network-tui \
+ ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip \
+ openssl openssh-server openssh-clients
+
+systemctl enable sshd
 #base------------------------------------------------------------------------------------------
 
 
